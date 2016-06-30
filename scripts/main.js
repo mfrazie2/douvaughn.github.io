@@ -22,43 +22,54 @@ $(document).ready(function() {
 
 		function each() {}
 
-		eval(code);
 
-		function testMap(collection, iteratee) {
-			var result = [];
-
-			each(collection,function(element,index,list) {
-				result.push(iteratee(element));
-			});
-
-			return result;
-		}
-
-		var passed = _.every(testData, function(element) {
-			if (isEqualArray(_.map(element,multiply5),testMap(element,multiply5))) {
-				return true;
-			} else {
-				return false;
-			}
-		});
-		
-		if (passed) {
-			$('#eachFun').remove();
-			$('#welcome').append('<h2>Great job with the each function!</h2>');
-			$('#welcome').append('<p>Now you can pick which of the availiable functions below you would like to attempt!</p>');
-			buildChecklist(methods);
-			$('#welcome').append('<button id="generate">Generate!</button>');
-
-			mainFun();
-
+		if (inputVal(code,'function each')) {
+			alert('Invalid Input: function must be named "each"!');
 		} else {
-			$('#eachFun').append('<p>Failed!</p>');
+			
+			console.log(code);
+
+			eval(code);
+
+			console.log(each);
+
+			function testMap(collection, iteratee) {
+				var result = [];
+
+				each(collection,function(element,index,list) {
+					result.push(iteratee(element));
+				});
+
+				return result;
+			}
+
+			var passed = _.every(testData, function(element) {
+				if (isEqualArray(_.map(element,multiply5),testMap(element,multiply5))) {
+					return true;
+				} else {
+					return false;
+				}
+			});
+			
+			if (passed) {
+				$('#eachFun').remove();
+				$('#welcome').append('<h2>Great job with the each function!</h2>');
+				$('#welcome').append('<p>Now you can pick which of the availiable functions below you would like to attempt!</p>');
+				buildChecklist(methods);
+				$('#welcome').append('<button id="generate">Generate!</button>');
+
+				mainFun();
+
+			} else {
+				$('#eachFun').append('<p>Failed!</p>');
+			}
 		}
 	});
 
 	
 	function mainFun() {
 		$('#generate').click(function () {
+			$('#forCode').empty();
 			var methodsToPractice = [];
 
 			$('input:checkbox[name=methods]:checked').each(function(){
@@ -76,20 +87,24 @@ $(document).ready(function() {
 				var code = $('#filterCodeBlock').val();
 				var testData = [[1,2,3,4,5,6,7,8,9],[3,6,34,8,934,56]];
 
-				eval(code);
-
-				var passed = _.every(testData, function(element) {
-					if (isEqualArray(_.filter(element,isEven),filter(element,isEven))) {
-						return true;
-					} else {
-						return false;
-					}
-				});
-				
-				if (passed) {
-					$('#filterFun').append('<p>Correct!</p>');
+				if (inputVal(code,'function filter')) {
+					alert('Invalid Input: function must be named "filter"!');
 				} else {
-					$('#filterFun').append('<p>Failed!</p>');
+					eval(code);
+
+					var passed = _.every(testData, function(element) {
+						if (isEqualArray(_.filter(element,isEven),filter(element,isEven))) {
+							return true;
+						} else {
+							return false;
+						}
+					});
+					
+					if (passed) {
+						$('#filterFun').append('<p>Correct!</p>');
+					} else {
+						$('#filterFun').append('<p>Failed!</p>');
+					}
 				}
 			});
 
@@ -97,20 +112,24 @@ $(document).ready(function() {
 				var code = $('#findCodeBlock').val();
 				var testData = [[1,2,3,4,5,6,7,8,9],[3,6,34,8,934,56]];
 
-				eval(code);
-
-				var passed = _.every(testData, function(element) {
-					if (isEqualArray(_.find(element,isEven),find(element,isEven))) {
-						return true;
-					} else {
-						return false;
-					}
-				});
-				
-				if (passed) {
-					$('#findFun').append('<p>Correct!</p>');
+				if (inputVal(code,'function find')) {
+					alert('Invalid Input: function must be named "find"!');
 				} else {
-					$('#findFun').append('<p>Failed!</p>');
+					eval(code);
+
+					var passed = _.every(testData, function(element) {
+						if (isEqualArray(_.find(element,isEven),find(element,isEven))) {
+							return true;
+						} else {
+							return false;
+						}
+					});
+					
+					if (passed) {
+						$('#findFun').append('<p>Correct!</p>');
+					} else {
+						$('#findFun').append('<p>Failed!</p>');
+					}
 				}
 			});
 
@@ -118,20 +137,24 @@ $(document).ready(function() {
 				var code = $('#reduceCodeBlock').val();
 				var testData = [[1,2,3,4,5,6,7,8,9],[3,6,34,8,934,56]];
 
-				eval(code);
-
-				var passed = _.every(testData, function(element) {
-					if (isEqualArray(_.reduce(element,addTogether),reduce(element,addTogether))) {
-						return true;
-					} else {
-						return false;
-					}
-				});
-				
-				if (passed) {
-					$('#reduceFun').append('<p>Correct!</p>');
+				if (inputVal(code,'function reduce')) {
+					alert('Invalid Input: function must be named "reduce"!');
 				} else {
-					$('#reduceFun').append('<p>Failed!</p>');
+					eval(code);
+
+					var passed = _.every(testData, function(element) {
+						if (isEqualArray(_.reduce(element,addTogether),reduce(element,addTogether))) {
+							return true;
+						} else {
+							return false;
+						}
+					});
+					
+					if (passed) {
+						$('#reduceFun').append('<p>Correct!</p>');
+					} else {
+						$('#reduceFun').append('<p>Failed!</p>');
+					}
 				}
 			});
 		
@@ -139,25 +162,38 @@ $(document).ready(function() {
 				var code = $('#mapCodeBlock').val();
 				var testData = [[1,2,3,4,5,6,7,8,9],[3,6,34,8,934,56]];
 
-				eval(code);
-
-				var passed = _.every(testData, function(element) {
-					if (isEqualArray(_.map(element,multiply5),map(element,multiply5))) {
-						return true;
-					} else {
-						return false;
-					}
-				});
-				
-				if (passed) {
-					$('#mapFun').append('<p>Correct!</p>');
+				if (inputVal(code,'function map')) {
+					alert('Invalid Input: function must be named "map"!');
 				} else {
-					$('#mapFun').append('<p>Failed!</p>');
-				}
+					eval(code);
 
+					var passed = _.every(testData, function(element) {
+						if (isEqualArray(_.map(element,multiply5),map(element,multiply5))) {
+							return true;
+						} else {
+							return false;
+						}
+					});
+					
+					if (passed) {
+						$('#mapFun').append('<p>Correct!</p>');
+					} else {
+						$('#mapFun').append('<p>Failed!</p>');
+					}
+				}
 			});
 
 		});
+	}
+
+	function inputVal(str1,str2) {
+		var failed = false;
+		for (var i = 0; i < str2.length; i++) {
+			if (str1.charAt(i) !== str2.charAt(i)) {
+				failed = true;
+			}
+		}
+		return failed;
 	}
 
 	function buildChecklist(array) {
