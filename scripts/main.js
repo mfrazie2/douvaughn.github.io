@@ -20,6 +20,8 @@ $(document).ready(function() {
 		var code = $('#eachCodeBlock').val();
 		var testData = [[1,2,3,4,5,6,7,8,9],[3,6,34,8,934,56]];
 
+		function each() {}
+
 		eval(code);
 
 		function testMap(collection, iteratee) {
