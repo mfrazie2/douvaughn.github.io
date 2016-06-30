@@ -1,7 +1,14 @@
 $(document).ready(function() {
 
 	$('header').append('<h1>Higher Order Function Practice</h1>');
-	$('body').append('<div id="welcome"></div>');
+	$('body').append('<div id="welcome"><p>This website was built to help you refine your understanding of '
+		+ 'Higher Order Functions in JavaScript.  I suggest copying the text in the input fields into your text '
+		+ ' editor of choice to build your function there and then paste in your function to test it.  '
+		+ 'To start you must complete the each function below, so that you can understand how to use the each '
+		+ ' function that will be provided to you to use in the other functions you will make.  Once you have '
+		+ 'successfully completed the each function you will be asked what other functions you would like to '
+		+ 'attempt.  Have fun!</p></div>');
+	$('body').append('<div id="forCode"></div>')
 
 	buildExercise('each');
 
@@ -34,9 +41,11 @@ $(document).ready(function() {
 		});
 		
 		if (passed) {
-			$('#eachFun').append('<p>Correct!</p>');
-			$('#welcome').append('<p>Pick how many Higher Order Functions you would like to write.</p>');
-			$('#welcome').append('<input id="pracNum"><button id="generate">Generate!</button>');
+			$('#eachFun').remove();
+			$('#welcome').append('<h2>Great job with the each function!</h2>');
+			$('#welcome').append('<p>Now you can pick which of the availiable functions below you would like to attempt!</p>');
+			buildChecklist(methods);
+			$('#welcome').append('<button id="generate">Generate!</button>');
 
 			mainFun();
 
@@ -48,16 +57,18 @@ $(document).ready(function() {
 	
 	function mainFun() {
 		$('#generate').click(function () {
-			$('body').append('<div id="forCode"><h3>This is the each function that will be used in your code.</h3>' +
+			var methodsToPractice = [];
+
+			$('input:checkbox[name=methods]:checked').each(function(){
+			    methodsToPractice.push($(this).val());
+			});
+
+			$('#forCode').prepend('<div id="eachCode"><h3>This is the each function that will be used in your code.</h3>' +
 				'<img src="images/each.png"></div>')
-			var numToPractice = $('#pracNum').val();
-			var methodsToPractice = pickMethods(numToPractice);
 
 			_.each(methodsToPractice, function(element) {
-				buildExercise(methods[element]);
+				buildExercise(element);
 			})
-
-
 
 			$('#filterCheck').click(function() {
 				var code = $('#filterCodeBlock').val();
@@ -85,8 +96,6 @@ $(document).ready(function() {
 				var testData = [[1,2,3,4,5,6,7,8,9],[3,6,34,8,934,56]];
 
 				eval(code);
-
-				// Figure out how to test find
 
 				var passed = _.every(testData, function(element) {
 					if (isEqualArray(_.find(element,isEven),find(element,isEven))) {
@@ -149,6 +158,13 @@ $(document).ready(function() {
 		});
 	}
 
+	function buildChecklist(array) {
+		$('#welcome').append('<div id="checklist"></div>')
+		_.each(array,function(element,index,list) {
+			$('#checklist').append('<input type="checkbox" name="methods" value="' + element + '">' + capFirst(element));
+		})
+	}
+
 	function addTogether(num1,num2) {
 		return num1 + num2;
 	}
@@ -187,21 +203,10 @@ $(document).ready(function() {
 	}
 
 	function buildExercise(str) {
-		$('body').append('<div id="' + str + 'Fun"></div>');
+		$('#forCode').append('<div id="' + str + 'Fun"></div>');
 		$('#' + str + 'Fun').append('<h2>' + capFirst(str) + '</h2>');
-		$('#' + str + 'Fun').append('<textarea id="' + str + 'CodeBlock">function ' + str + '() {\n\n}</textarea>');
+		$('#' + str + 'Fun').append('<textarea id="' + str + 'CodeBlock">function ' + str + '() {\n\t// Your Code Here!\n}</textarea>');
 		$('#' + str + 'Fun').append('<button id="' + str + 'Check">Check ' + capFirst(str) + '</button>');
-	}
-
-	function pickMethods(num) {
-		var array = [];
-		for (var i = 0; i < num; i++) {
-			do {
-				var index = Math.floor(Math.random() * methods.length);
-			} while (_.contains(array,index));
-			array.push(index);
-		}
-		return array;
 	}
 
 	function each(collection, callback) {
