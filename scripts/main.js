@@ -7,14 +7,20 @@ $(document).ready(function() {
 		+ 'To start you must complete the each function below, so that you can understand how to use the each '
 		+ ' function that will be provided to you to use in the other functions you will make.  Once you have '
 		+ 'successfully completed the each function you will be asked what other functions you would like to '
-		+ 'attempt.  Have fun!</p></div>');
+		+ 'attempt.  If you don\'t know what the function is supposed to do, click on the \'?\' button and that '
+		+ 'will direct you to the documentation for that function on underscorejs.org.  Have fun!</p></div>');
 	$('body').append('<div id="forCode"></div>')
 
 	buildExercise('each');
 
-
-
 	var methods = ['map','reduce','find','filter'];
+	var helpLinks = {
+		'eachHelp': 'http://underscorejs.org/#each',
+		'mapHelp': 'http://underscorejs.org/#map',
+		'reduceHelp': 'http://underscorejs.org/#reduce',
+		'findHelp': 'http://underscorejs.org/#find',
+		'filterHelp': 'http://underscorejs.org/#filter'
+	}
 
 	$('#eachCheck').click(function() {
 		var code = $('#eachCodeBlock').val();
@@ -22,16 +28,10 @@ $(document).ready(function() {
 
 		function each() {}
 
-
 		if (inputVal(code,'function each')) {
 			alert('Invalid Input: function must be named "each"!');
 		} else {
-			
-			console.log(code);
-
 			eval(code);
-
-			console.log(each);
 
 			function testMap(collection, iteratee) {
 				var result = [];
@@ -54,14 +54,15 @@ $(document).ready(function() {
 			if (passed) {
 				$('#eachFun').remove();
 				$('#welcome').append('<h2>Great job with the each function!</h2>');
-				$('#welcome').append('<p>Now you can pick which of the availiable functions below you would like to attempt!</p>');
+				$('#welcome').append('<p id="pick">Now you can pick which of the availiable functions below you would like to attempt!</p>');
 				buildChecklist(methods);
-				$('#welcome').append('<button id="generate">Generate!</button>');
+				$('#welcome').append('<button id="generate" class="button">Generate!</button>');
 
 				mainFun();
 
 			} else {
-				$('#eachFun').append('<p>Failed!</p>');
+				$('#answer').remove();
+				$('#eachFun').append('<p id="answer">Failed!</p>');
 			}
 		}
 	});
@@ -93,18 +94,18 @@ $(document).ready(function() {
 					eval(code);
 
 					var passed = _.every(testData, function(element) {
-						if (isEqualArray(_.filter(element,isEven),filter(element,isEven))) {
+						if (filter(element,isEven) === undefined) {
+							return false;
+						} else if (isEqualArray(_.filter(element,isEven),filter(element,isEven))) {
 							return true;
 						} else {
 							return false;
 						}
 					});
+
+					$('#filterFun #answer').remove();
 					
-					if (passed) {
-						$('#filterFun').append('<p>Correct!</p>');
-					} else {
-						$('#filterFun').append('<p>Failed!</p>');
-					}
+					codePassed(passed,'#filterFun');
 				}
 			});
 
@@ -118,18 +119,18 @@ $(document).ready(function() {
 					eval(code);
 
 					var passed = _.every(testData, function(element) {
-						if (isEqualArray(_.find(element,isEven),find(element,isEven))) {
+						if (find(element,isEven) === undefined) {
+							return false;
+						} else if (isEqualArray(_.find(element,isEven),find(element,isEven))) {
 							return true;
 						} else {
 							return false;
 						}
 					});
+
+					$('#findFun #answer').remove();
 					
-					if (passed) {
-						$('#findFun').append('<p>Correct!</p>');
-					} else {
-						$('#findFun').append('<p>Failed!</p>');
-					}
+					codePassed(passed,'#findFun');
 				}
 			});
 
@@ -143,18 +144,18 @@ $(document).ready(function() {
 					eval(code);
 
 					var passed = _.every(testData, function(element) {
-						if (isEqualArray(_.reduce(element,addTogether),reduce(element,addTogether))) {
+						if (reduce(element,addTogether) === undefined) {
+							return false;
+						} else if (isEqualArray(_.reduce(element,addTogether),reduce(element,addTogether))) {
 							return true;
 						} else {
 							return false;
 						}
 					});
+
+					$('#reduceFun #answer').remove();
 					
-					if (passed) {
-						$('#reduceFun').append('<p>Correct!</p>');
-					} else {
-						$('#reduceFun').append('<p>Failed!</p>');
-					}
+					codePassed(passed,'#reduceFun');
 				}
 			});
 		
@@ -168,22 +169,30 @@ $(document).ready(function() {
 					eval(code);
 
 					var passed = _.every(testData, function(element) {
-						if (isEqualArray(_.map(element,multiply5),map(element,multiply5))) {
+						if (map(element,multiply5) === undefined) {
+							return false;
+						} else if (isEqualArray(_.map(element,multiply5),map(element,multiply5))) {
 							return true;
 						} else {
 							return false;
 						}
 					});
-					
-					if (passed) {
-						$('#mapFun').append('<p>Correct!</p>');
-					} else {
-						$('#mapFun').append('<p>Failed!</p>');
-					}
+
+					$('#mapFun #answer').remove();
+
+					codePassed(passed,'#mapFun');
 				}
 			});
 
 		});
+	}
+
+	function codePassed(bool,str) {
+		if (bool) {
+			$(str).append('<p id="answer">Correct!</p>');
+		} else {
+			$(str).append('<p id="answer">Failed!</p>');
+		}
 	}
 
 	function inputVal(str1,str2) {
@@ -199,7 +208,7 @@ $(document).ready(function() {
 	function buildChecklist(array) {
 		$('#welcome').append('<div id="checklist"></div>')
 		_.each(array,function(element,index,list) {
-			$('#checklist').append('<input type="checkbox" name="methods" value="' + element + '">' + capFirst(element));
+			$('#checklist').append('<input type="checkbox" name="methods" value="' + element + '">' + capFirst(element) + '    ');
 		})
 	}
 
@@ -241,10 +250,14 @@ $(document).ready(function() {
 	}
 
 	function buildExercise(str) {
-		$('#forCode').append('<div id="' + str + 'Fun"></div>');
-		$('#' + str + 'Fun').append('<h2>' + capFirst(str) + '</h2>');
-		$('#' + str + 'Fun').append('<textarea id="' + str + 'CodeBlock">function ' + str + '() {\n\t// Your Code Here!\n}</textarea>');
-		$('#' + str + 'Fun').append('<button id="' + str + 'Check">Check ' + capFirst(str) + '</button>');
+		$('#forCode').append('<div id="' + str + 'Fun" class="codeSquares"></div>');
+		$('#' + str + 'Fun').append('<h3>' + capFirst(str) + '</h3>');
+		$('#' + str + 'Fun').append('<textarea id="' + str + 'CodeBlock" cols="70" rows="20">function ' + str + '() {\n\t// Your Code Here!\n}</textarea>');
+		$('#' + str + 'Fun').append('<br><button id="' + str + 'Check" class="button">Check ' + capFirst(str) + '</button>');
+		$('#' + str + 'Fun').append('<button id="' + str + 'Help" class="helpButton button">?</button>');
+		$('#' + str + 'Help').click(function(event) {
+			window.open(helpLinks[event.target.id],'_blank');
+		});
 	}
 
 	function each(collection, callback) {

@@ -1,0 +1,83 @@
+html {
+	text-align: center;
+	width: 100%;
+	height: 100%;
+	background-color: #16a085;
+	color: #ecf0f1;
+}
+
+h1,h2 {
+	font-family: 'Slabo 27px', serif;
+}
+
+p {
+	font-family: 'Roboto', sans-serif;
+	margin: 2% 10% 5% 10%;
+}
+
+h3 {
+	font-family: 'Roboto', sans-serif;
+	font-size: 24px;
+}
+
+textarea {
+	resize: none;
+	border-radius: 8px;
+	border: 2px solid #ecf0f1;
+	background-color: #34495e;
+	color: #ecf0f1;
+	padding: 5px;
+	box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+	font-family: 'Inconsolata', monospace;
+}
+
+textarea:focus,button:focus {
+    outline: none;
+}
+
+img {
+	max-width:460px;
+	max-height:190px;
+	width: auto;
+	height: auto;
+	border: 2px solid #ecf0f1;
+}
+
+button {
+	font-family: 'Roboto', sans-serif;
+	background-color: #16a085;
+	border-radius: 8px;
+	border: 2px solid #ecf0f1;
+	color: #ecf0f1;
+	box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+	font-size: 24px;
+	margin: 10px 5px 5px 5px;
+	padding: 10px;
+}
+
+#pick {
+	margin: 3%;
+}
+
+#generate {
+	margin: 3%;
+}
+
+div#eachFun {
+	width: 100%;
+}
+
+.codeSquares {
+	float: left;
+	min-height: 451px;
+	width: 49%;
+}
+
+.button:active {
+  transform: translateY(4px);
+}
+
+.button:hover {
+	background-color: #ecf0f1;
+	color: #16a085;
+}
